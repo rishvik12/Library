@@ -80,6 +80,10 @@ public class ElementsModifier {
 			String sym = scn.nextLine();
 			
 			
+			if(sym.equalsIgnoreCase("Stop")) {
+				System.err.println("Grcias for Using .. Adios ");
+				break;
+			}
 			System.out.println("==========");
 			System.out.println(n1.search(sym));
 			System.out.println("==========");
