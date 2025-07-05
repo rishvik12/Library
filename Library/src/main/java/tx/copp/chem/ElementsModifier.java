@@ -10,47 +10,14 @@ import java.util.Scanner;
 public class ElementsModifier {
 
 	private String name;
+	
+	private HashMap<String, Element> chemMap = new HashMap<String, Element>();
+	
 
-	public void modFile(String name) throws IOException {
-	    File chemF = new File(name);
-	    File newChemF = new File(name + ".bak");
+	public void loadFile() {
 
-	    if (chemF.exists()) {
-	        System.err.println("File exists: " + chemF.getAbsolutePath());
-
-	        Scanner scan = new Scanner(chemF);
-	        FileWriter wrtt = new FileWriter(newChemF);
-
-	        while (scan.hasNextLine()) {
-	            String temp = scan.nextLine();
-	            temp = temp.replace(",", "/");
-	            wrtt.write(temp + System.lineSeparator());
-	        }
-
-	        scan.close();
-	        wrtt.close();
-	    } else {
-	        System.err.println("File does not exist: " + chemF.getAbsolutePath());
-	    }
-	}
-		
-
-	public static void main(String[] args) {
-		
 		String fileName = "./chem.dat";
-		
-		ElementsModifier n1 = new ElementsModifier();
-		try { 
-			n1.modFile(fileName);
-		}catch(IOException e) {
-			e.printStackTrace();
-		}
-
-		HashMap<String, Element> chemMap = new HashMap<String, Element>();
-
-		
 		File chemF = new File(fileName);
-
 		try {
 			Scanner scan = new Scanner(chemF);
 		} catch (FileNotFoundException e) {
@@ -60,25 +27,70 @@ public class ElementsModifier {
 		try {
 			Scanner scan = new Scanner(chemF);
 
-			while (scan.hasNextLine()) {
+			while (scan.hasNextLine())	{
 				String line = scan.nextLine();
 
 				String[] elRay = line.split(",");
 
 				Element temp = new Element();
 				temp.setName(elRay[0]);
-				chemMap.put(elRay[1], temp);
+				temp.setSymbol(elRay[1]);
+				temp.setAtomicNumber(Integer.parseInt(elRay[3]));
+				temp.setAtmoicMass(Double.parseDouble(elRay[2]));
 
-				System.err.println(temp.getName().toUpperCase());
+				chemMap.put(temp.getSymbol(), temp);
 
+				System.err.println(elRay[0]);
+				
+				if (chemF.exists())	{
+					System.err.println();
 			}
-
+			
+		}
 			scan.close();
 
+			
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		    e.printStackTrace(); 
 		}
+			
+		}
+	
+	public Element search(String key) {
+		return chemMap.get(key);
 
 	}
 
+		
+	public void modFile(String name) throws IOException {}
+		
+
+	public static void main(String[] args) {
+		
+		
+			
+		ElementsModifier n1 = new ElementsModifier();
+		n1.loadFile();
+				
+		Scanner scn = null;
+		scn = new Scanner(System.in);
+		
+		while(true) {
+			System.out.println("========Bro Enter Symbol========");
+			String sym = scn.nextLine();
+			
+			
+			System.out.println("==========");
+			System.out.println(n1.search(sym));
+			System.out.println("==========");
+		
+			
+		}
+		
+		
+
+	}
+
+
+	
 }
